@@ -628,8 +628,22 @@ document.getElementById('conn-swatches').addEventListener('click',e=>{
 const recPill=document.getElementById('rec-pill');
 const recLabelEl=document.getElementById('rec-label');
 let isRecording=false,mediaRec=null,audioChunks=[],recordingTarget=null;
+let _speechRec=null,_speechWords=[];
+const _SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 function getBestMime(){return['audio/webm;codecs=opus','audio/webm','audio/ogg;codecs=opus','audio/mp4'].find(t=>MediaRecorder.isTypeSupported(t))||'';}
 function mimeToExt(m){return m.includes('ogg')?'ogg':m.includes('mp4')?'mp4':'webm';}
+
+function _applyWords(target,words){
+  if(!target||!words.length)return;
+  target.words=[...(target.words||[]),...words];
+  if(target._type==='sphere'){
+    target.termSpan.textContent=target.words.slice(0,4).join(' ')+(target.words.length>4?'…':'');
+    target.labelDiv.querySelector('.note-icon').classList.toggle('has-note',target.words.length>0);
+  }else{
+    target.labelEl.querySelector('.note-icon').classList.toggle('has-note',target.words.length>0);
+  }
+  if(vwordTarget===target)renderVwords();
+}
 
 async function startRecording(target){
   if(isRecording)return;
@@ -637,35 +651,43 @@ async function startRecording(target){
     const stream=await navigator.mediaDevices.getUserMedia({audio:true});
     const mime=getBestMime();
     mediaRec=new MediaRecorder(stream,mime?{mimeType:mime}:{});
-    audioChunks=[];
+    audioChunks=[];_speechWords=[];
     mediaRec.ondataavailable=e=>{if(e.data.size>0)audioChunks.push(e.data);};
     mediaRec.start(100);
     isRecording=true;recordingTarget=target;target.recording=true;
+    // Use browser built-in speech recognition (Chrome/Edge — no API key needed)
+    if(_SR){
+      _speechRec=new _SR();
+      _speechRec.continuous=true;_speechRec.interimResults=false;
+      _speechRec.onresult=e=>{
+        for(let i=e.resultIndex;i<e.results.length;i++){
+          if(e.results[i].isFinal)_speechWords.push(...e.results[i][0].transcript.trim().split(/\s+/).filter(Boolean));
+        }
+      };
+      _speechRec.onerror=()=>{};
+      try{_speechRec.start();}catch(e){}
+    }
     const label=target._type==='sphere'?'∅':'─';
     recPill.classList.add('show');
-    recLabelEl.textContent='REC '+label+(target._type==='sphere'?String(target.id).padStart(2,'0'):String(target.id).padStart(2,'0'));
+    recLabelEl.textContent='REC '+label+String(target.id).padStart(2,'0');
     setT4('rec-row');setStatus('● RECORDING — RELEASE [4] TO TRANSCRIBE');
   }catch(err){setStatus('⚠ MIC PERMISSION DENIED');}
 }
 
 async function stopRecording(){
   if(!isRecording||!mediaRec)return;
+  // Stop speech recognition and wait briefly for final results
+  if(_speechRec){try{_speechRec.stop();}catch(e){}_speechRec=null;}
+  await new Promise(r=>setTimeout(r,350));
   return new Promise(resolve=>{
     mediaRec.onstop=async()=>{
       const target=recordingTarget;
       isRecording=false;recordingTarget=null;
       if(target)target.recording=false;
       recPill.classList.remove('show');setT4('');
-      const cfg=window.SPHERE_CFG||{};
-      const localMode=cfg.localMode||false;
-      const transcribeURL=cfg.transcribeURL||'https://api.openai.com/v1/audio/transcriptions';
-      const apiKeyEl=document.getElementById('api-key-input');
-      const apiKey=localMode?null:(apiKeyEl?apiKeyEl.value.trim():'');
-      if(!localMode&&!apiKey){setStatus('AUDIO SAVED · RUN start.py FOR TRANSCRIPTION');resolve();return;}
-      setStatus('◌ TRANSCRIBING...');
       const mime=mediaRec.mimeType||'audio/webm';
       const blob=new Blob(audioChunks,{type:mime});
-      // Save audio immediately before sending to Whisper
+      // Always save audio
       if(target){
         const reader=new FileReader();
         reader.onloadend=()=>{
@@ -674,28 +696,31 @@ async function stopRecording(){
         };
         reader.readAsDataURL(blob);
       }
-      const fd=new FormData();
-      fd.append('file',blob,'rec.'+mimeToExt(mime));
-      if(!localMode)fd.append('model','whisper-1');
-      const headers=localMode?{}:{'Authorization':'Bearer '+apiKey};
-      try{
-        const r=await fetch(transcribeURL,{method:'POST',headers,body:fd});
-        const d=await r.json();
-        if(d.text){
-          const words=d.text.trim().split(/\s+/).filter(Boolean);
-          if(target){
-            target.words=[...(target.words||[]),...words];
-            if(target._type==='sphere'){
-              target.termSpan.textContent=target.words.slice(0,4).join(' ')+(target.words.length>4?'…':'');
-              target.labelDiv.querySelector('.note-icon').classList.toggle('has-note',target.words.length>0);
-            } else {
-              target.labelEl.querySelector('.note-icon').classList.toggle('has-note',target.words.length>0);
-            }
+      // Path 1: browser speech recognition (no API needed)
+      if(_speechWords.length>0){
+        _applyWords(target,_speechWords);
+        setStatus((target._type==='sphere'?'∅':'─')+String(target.id).padStart(2,'0')+' +'+_speechWords.length+' WORDS');
+        resolve();return;
+      }
+      // Path 2: local Whisper server (start.py)
+      const cfg=window.SPHERE_CFG||{};
+      if(cfg.localMode){
+        setStatus('◌ TRANSCRIBING...');
+        const fd=new FormData();
+        fd.append('file',blob,'rec.'+mimeToExt(mime));
+        try{
+          const r=await fetch(cfg.transcribeURL||'http://localhost:8765/transcribe',{method:'POST',body:fd});
+          const d=await r.json();
+          if(d.text){
+            const words=d.text.trim().split(/\s+/).filter(Boolean);
+            _applyWords(target,words);
             setStatus((target._type==='sphere'?'∅':'─')+String(target.id).padStart(2,'0')+' +'+words.length+' WORDS');
-            if(vwordTarget===target)renderVwords();
-          }
-        }else{setStatus('⚠ TRANSCRIPTION EMPTY');}
-      }catch(e){setStatus('⚠ WHISPER ERROR: '+e.message);}
+          }else{setStatus('⚠ TRANSCRIPTION EMPTY');}
+        }catch(e){setStatus('⚠ WHISPER ERROR: '+e.message);}
+        resolve();return;
+      }
+      // Path 3: nothing available
+      setStatus('⚠ USE CHROME FOR VOICE — OR RUN start.py');
       resolve();
     };
     if(mediaRec.stream)mediaRec.stream.getTracks().forEach(t=>t.stop());
