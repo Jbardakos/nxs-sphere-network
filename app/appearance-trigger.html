@@ -676,9 +676,15 @@ async function startRecording(target){
 
 async function stopRecording(){
   if(!isRecording||!mediaRec)return;
-  // Stop speech recognition and wait briefly for final results
-  if(_speechRec){try{_speechRec.stop();}catch(e){}_speechRec=null;}
-  await new Promise(r=>setTimeout(r,350));
+  // Wait for speech recognition to fully finish before checking results
+  if(_speechRec){
+    await new Promise(r=>{
+      const sr=_speechRec; _speechRec=null;
+      sr.onend=r;
+      setTimeout(r,2000); // safety fallback
+      try{sr.stop();}catch(e){r();}
+    });
+  }
   return new Promise(resolve=>{
     mediaRec.onstop=async()=>{
       const target=recordingTarget;
