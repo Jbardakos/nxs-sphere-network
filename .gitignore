@@ -2,46 +2,45 @@
 __pycache__/
 *.py[cod]
 *.pyo
-*.pyd
-.Python
-env/
-venv/
 .venv/
+venv/
+env/
 *.egg-info/
 dist/
 build/
-.pytest_cache/
 
-# faster-whisper model cache
-models/
-*.bin
-*.pt
+# Node / Electron
+node_modules/
+.npm/
+*.log
 
-# Vault files (personal research data — do not commit)
-*.nxsvault.json
-!examples/demo-vault.json
+# LaTeX build artifacts
+*.aux
+*.log
+*.out
+*.toc
+*.bbl
+*.blg
+*.bcf
+*.run.xml
+*.fdb_latexmk
+*.fls
+*.synctex.gz
 
-# OS
+# macOS
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
+.AppleDouble
+.LSOverride
+
+# Windows
 Thumbs.db
 desktop.ini
 
-# Editor
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
+# Models (large, download separately)
+*.bin
+*.pt
+*.gguf
+models/
 
-# Node (if any tooling is added later)
-node_modules/
-npm-debug.log*
-
-# Temporary
-*.tmp
-*.temp
-*.log
+# Vault saves (user data)
+*.vault.json
