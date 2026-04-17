@@ -661,7 +661,7 @@ async function stopRecording(){
       const transcribeURL=cfg.transcribeURL||'https://api.openai.com/v1/audio/transcriptions';
       const apiKeyEl=document.getElementById('api-key-input');
       const apiKey=localMode?null:(apiKeyEl?apiKeyEl.value.trim():'');
-      if(!localMode&&!apiKey){setStatus('⚠ NO API KEY');resolve();return;}
+      if(!localMode&&!apiKey){setStatus('AUDIO SAVED · RUN start.py FOR TRANSCRIPTION');resolve();return;}
       setStatus('◌ TRANSCRIBING...');
       const mime=mediaRec.mimeType||'audio/webm';
       const blob=new Blob(audioChunks,{type:mime});
