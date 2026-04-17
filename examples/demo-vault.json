@@ -1,0 +1,225 @@
+{
+  "nxs_version": "2.1.0",
+  "schema": "https://github.com/YOUR_USERNAME/nxs-sphere-network/blob/main/docs/VAULT_FORMAT.md",
+  "created": "2026-04-18T09:00:00Z",
+  "modified": "2026-04-18T15:30:00Z",
+  "discipline": "architecture",
+  "description": "Demo vault — Threshold and Boundary Concepts in Spatial Design",
+  "author": {
+    "name": "Dr. Iannis Bardakos",
+    "institution": "SCC, BNBU"
+  },
+  "project": {
+    "name": "Transdisciplinary Knowledge Ecology",
+    "grant": "BNBU Centre for Computational Culture and Heritage | NVIDIA DLI",
+    "period": "2025–2028"
+  },
+  "entities": [
+    {
+      "id": "node-arch-threshold-001",
+      "label": "Threshold",
+      "position": { "x": -60, "y": 10, "z": 20 },
+      "velocity": { "x": 0, "y": 0, "z": 0 },
+      "color": "#4a9eff",
+      "type": "concept",
+      "group": "boundary-concepts",
+      "words": ["threshold", "boundary", "liminal", "transition", "doorway"],
+      "notes": "# Threshold\n\nA boundary condition that mediates transition between inside and outside. Aldo van Eyck described the threshold as *the place of encounter* — neither inside nor outside, but the condition of both.\n\n**See also**: membrane, edge, interface, limen",
+      "frames": [],
+      "urls": [
+        "https://plato.stanford.edu/entries/boundary/"
+      ],
+      "audios": [],
+      "meta": {
+        "created": "2026-04-18T09:30:00Z",
+        "modified": "2026-04-18T11:45:00Z",
+        "discipline": "architecture",
+        "epistemic_function": "boundary-concept",
+        "resonance_score": null,
+        "collision_type": null
+      }
+    },
+    {
+      "id": "node-arch-interface-002",
+      "label": "Interface",
+      "position": { "x": -20, "y": -15, "z": 40 },
+      "velocity": { "x": 0, "y": 0, "z": 0 },
+      "color": "#4a9eff",
+      "type": "concept",
+      "group": "boundary-concepts",
+      "words": ["interface", "surface", "contact-zone", "mediation", "skin"],
+      "notes": "# Interface\n\nThe surface or zone where two systems meet and interact. In architecture, the interface is the membrane between programme and environment — a site of exchange, regulation, and affect.",
+      "frames": [],
+      "urls": [],
+      "audios": [],
+      "meta": {
+        "created": "2026-04-18T09:45:00Z",
+        "modified": "2026-04-18T09:45:00Z",
+        "discipline": "architecture",
+        "epistemic_function": "boundary-concept",
+        "resonance_score": null,
+        "collision_type": null
+      }
+    },
+    {
+      "id": "node-arch-pattern-003",
+      "label": "Pattern (Urban)",
+      "position": { "x": 40, "y": 30, "z": -10 },
+      "velocity": { "x": 0, "y": 0, "z": 0 },
+      "color": "#4a9eff",
+      "type": "concept",
+      "group": "scale-concepts",
+      "words": ["pattern", "urban-morphology", "typology", "grid", "repetition"],
+      "notes": "# Pattern (Urban Scale)\n\nRepeating structural organisation at the scale of the city: street grid, neighbourhood morphology, building typology. Christopher Alexander's Pattern Language operates at multiple scales simultaneously.",
+      "frames": [],
+      "urls": [
+        "https://en.wikipedia.org/wiki/Pattern_language"
+      ],
+      "audios": [],
+      "meta": {
+        "created": "2026-04-18T10:00:00Z",
+        "modified": "2026-04-18T10:00:00Z",
+        "discipline": "architecture",
+        "epistemic_function": "structural-concept",
+        "resonance_score": null,
+        "collision_type": null
+      }
+    },
+    {
+      "id": "node-arch-light-mood-004",
+      "label": "Light → Mood",
+      "position": { "x": -80, "y": -30, "z": -20 },
+      "velocity": { "x": 0, "y": 0, "z": 0 },
+      "color": "#4a9eff",
+      "type": "method",
+      "group": "affect-concepts",
+      "words": ["light", "shadow", "mood", "spatial-affect", "atmosphere"],
+      "notes": "# Light → Mood (Causal Chain)\n\nThe architectural causal chain: **light → shadow → mood → spatial affect**. Well-formalised in phenomenological architecture. Peter Zumthor's *Atmospheres* is the key text.",
+      "frames": [],
+      "urls": [],
+      "audios": [],
+      "meta": {
+        "created": "2026-04-18T10:15:00Z",
+        "modified": "2026-04-18T10:15:00Z",
+        "discipline": "architecture",
+        "epistemic_function": "causal-chain",
+        "resonance_score": null,
+        "collision_type": null
+      }
+    },
+    {
+      "id": "node-bridge-threshold-membrane-005",
+      "label": "Threshold-Membrane",
+      "position": { "x": 0, "y": 0, "z": 0 },
+      "velocity": { "x": 0, "y": 0, "z": 0 },
+      "color": "#ff9f40",
+      "type": "bridge",
+      "group": null,
+      "words": ["threshold-membrane", "bounded-permeability", "selective-passage", "boundary-condition"],
+      "notes": "# Threshold-Membrane (n*)\n\n> **Bridge-concept** — Analogy collision: Threshold (architecture) × Membrane (cell biology)\n\nA concept of **bounded permeability** applicable to both spatial and biological boundary design: a surface that is both boundary and passage, selective rather than absolute in its mediation.\n\nNeither the architectural threshold nor the biological membrane alone generates this concept. It requires the collision.\n\n```yaml\nevaluation:\n  traceability: true\n  disciplinary_distance: 0.71\n  conceptual_coherence: 4\n  categorical_novelty: true\n  pedagogical_value: fertile\n  artistic_usefulness: plausible\n  classification: fertile\n```",
+      "frames": [],
+      "urls": [],
+      "audios": [],
+      "meta": {
+        "created": "2026-04-18T14:00:00Z",
+        "modified": "2026-04-18T14:00:00Z",
+        "discipline": "bridge",
+        "epistemic_function": "n-star",
+        "resonance_score": 0.87,
+        "collision_type": "analogy",
+        "source_A": "node-arch-threshold-001",
+        "source_B": "node-bio-membrane-external",
+        "spawned_by": "bridge-builder-agent",
+        "classification": "fertile"
+      }
+    }
+  ],
+  "connections": [
+    {
+      "id": "conn-001",
+      "source": "node-arch-threshold-001",
+      "target": "node-arch-interface-002",
+      "type": "causal",
+      "weight": 0.8,
+      "label": "threshold enables interface",
+      "directed": true,
+      "resonance_score": null,
+      "collision_type": null,
+      "provenance": null
+    },
+    {
+      "id": "conn-002",
+      "source": "node-arch-threshold-001",
+      "target": "node-bridge-threshold-membrane-005",
+      "type": "bridge",
+      "weight": 0.87,
+      "label": "analogy: shared boundary-condition role",
+      "directed": false,
+      "resonance_score": 0.87,
+      "collision_type": "analogy",
+      "provenance": {
+        "created_by": "bridge-builder-agent",
+        "created_at": "2026-04-18T14:00:00Z",
+        "source_discipline": "architecture",
+        "target_discipline": "cell-biology"
+      }
+    },
+    {
+      "id": "conn-003",
+      "source": "node-arch-light-mood-004",
+      "target": "node-arch-interface-002",
+      "type": "generative",
+      "weight": 0.6,
+      "label": "light-mood chain operates at interface",
+      "directed": true,
+      "resonance_score": null,
+      "collision_type": null,
+      "provenance": null
+    }
+  ],
+  "groups": [
+    {
+      "id": "group-boundary",
+      "label": "Boundary Concepts",
+      "members": ["node-arch-threshold-001", "node-arch-interface-002"],
+      "color": "#4a9eff",
+      "notes": "Cluster of concepts related to spatial and conceptual boundary conditions in architecture.",
+      "agent_summary": null
+    },
+    {
+      "id": "group-scale",
+      "label": "Scale Concepts",
+      "members": ["node-arch-pattern-003"],
+      "color": "#22c55e",
+      "notes": "Concepts that operate across multiple scales.",
+      "agent_summary": null
+    }
+  ],
+  "session_log": [
+    {
+      "timestamp": "2026-04-18T09:00:00Z",
+      "action": "vault_created",
+      "entity_id": null,
+      "user": "bardakos",
+      "data": { "description": "Demo vault initialised" }
+    },
+    {
+      "timestamp": "2026-04-18T14:00:00Z",
+      "action": "n_star_spawned",
+      "entity_id": "node-bridge-threshold-membrane-005",
+      "user": "bridge-builder-agent",
+      "data": {
+        "collision_type": "analogy",
+        "source_A": "node-arch-threshold-001",
+        "source_B": "node-bio-membrane-external",
+        "resonance_score": 0.87
+      }
+    }
+  ],
+  "meta": {
+    "node_count": 5,
+    "connection_count": 3,
+    "group_count": 2,
+    "evaluated_bridges": 1
+  }
+}
